@@ -1,4 +1,4 @@
-package example.ecom.entity;
+package com.coffeehouse.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -11,5 +11,4 @@ public class OrderEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Double totalPrice;
-    private
 }

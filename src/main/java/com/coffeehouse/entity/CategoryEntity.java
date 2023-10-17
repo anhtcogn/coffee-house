@@ -1,4 +1,4 @@
-package example.ecom.entity;
+package com.coffeehouse.entity;
 
 public class CategoryEntity {
     private Long id;

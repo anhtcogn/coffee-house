@@ -1,4 +1,4 @@
-package example.ecom.entity;
+package com.coffeehouse.entity;
 
 public class AddressEntity {
     private Long id;
