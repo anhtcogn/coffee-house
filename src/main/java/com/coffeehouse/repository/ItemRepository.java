@@ -1,4 +1,8 @@
 package com.coffeehouse.repository;
+import com.coffeehouse.entity.ItemEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public class ItemRepository {
+@Repository
+public interface ItemRepository extends JpaRepository<ItemEntity, Long>{
 }

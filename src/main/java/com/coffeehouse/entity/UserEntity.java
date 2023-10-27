@@ -1,8 +1,8 @@
 package com.coffeehouse.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.*;
 import lombok.Data;
+import javax.persistence.*;
 
 import java.time.LocalDate;
 import java.util.Date;

@@ -1,7 +1,8 @@
 package com.coffeehouse.entity;
 
-import jakarta.persistence.*;
 import lombok.Data;
+
+import javax.persistence.*;
 
 @Entity
 @Data
@@ -19,12 +20,8 @@ public class ItemEntity {
     private Double originPrice;
     private String description;
 
-    @Enumerated(EnumType.STRING)
-    private ProductCategory category;
-
-    enum ProductCategory {
-        COFFEE, TEA, FRUIT_JUICE, CAKE
-    }
+    @Column(name = "category_id")
+    private Long categoryId;
 }
 
 
