@@ -14,9 +14,12 @@ public class PaymentEntity {
     private Long id;
     private double amount;
     private String token;
+    @Column(name = "payment_mode")
     private String paymentMode = "paypal";
+    @Column(name = "payment_date")
     private LocalDateTime paymentDate;
     private String currency = "USD";
+    @Column(name = "payment_status")
     private String paymentStatus;
 
     @Column(name = "order_id")

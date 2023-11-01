@@ -1,9 +1,9 @@
 package com.coffeehouse.entity;
 
 import lombok.Data;
+
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Date;
 
 @Entity
 @Data
@@ -16,12 +16,26 @@ public class VoucherEntity {
     private String content;
     private String description;
     private int quantity;
-    private LocalDate startDate;
-    private Date endDate;
-
+    @Column(name = "end_date")
+    private int endDate;
+    private int discount;
+    @Column(name = "is_used")
+    private boolean isUsed;
+    @Column(name = "user_id")
+    private Long userId;
+    @Column(name = "voucher_type")
+    @Enumerated(EnumType.STRING)
+    private VoucherType voucherType;
+    
     @Transient
-    private Long expireDayLeft;
+    private int expireDayLeft = getExpireDayLeft(endDate);
 
-    public Long getExpireDayLeft() {
+    public int getExpireDayLeft(int endDate) {
+        LocalDate currentDate = LocalDate.now();
+        return endDate - currentDate.getDayOfMonth();
+    }
+
+    enum VoucherType {
+        SHIPPING, BILL
     }
 }

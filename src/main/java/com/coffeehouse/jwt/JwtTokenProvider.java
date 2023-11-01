@@ -49,5 +49,27 @@ public class JwtTokenProvider {
         }
         return false;
     }
+
+    // Get userId từ RequestHeader "Authorization"
+    public Long getUserIdFromHeader(String jwt) {
+        if (jwt == null){
+            return null;
+        }
+        String[] new_jwt = jwt.split("\\s");
+        jwt = new_jwt[1];
+        return this.getUserIdFromJwt(jwt);
+    }
+
+
+    public String generateTokenByIdUser(Long userId) {
+        Date now = new Date();
+        Date expiryDate = new Date(now.getTime() + JWT_EXPIRATION);
+        return Jwts.builder()
+                .setSubject(Long.toString(userId))
+                .setIssuedAt(now)
+                .setExpiration(expiryDate)
+                .signWith(SignatureAlgorithm.HS512, JWT_SECRET)
+                .compact();
+    }
 }
 
