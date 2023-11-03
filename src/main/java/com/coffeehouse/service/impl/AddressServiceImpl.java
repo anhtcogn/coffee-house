@@ -16,11 +16,19 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public List<AddressEntity> getAddressOfUser(Long userid) {
-        return null;
+        return addressRepository.getAllByUserId(userid);
     }
 
     @Override
     public AddressEntity getAddress(Long id) {
         return addressRepository.getById(id);
+    }
+
+    @Override
+    public AddressEntity create(AddressEntity addressEntity) {
+        AddressEntity address = new AddressEntity();
+        address.setAddress(addressEntity.getAddress());
+        address.setId(addressEntity.getId());
+        return addressRepository.save(address);
     }
 }

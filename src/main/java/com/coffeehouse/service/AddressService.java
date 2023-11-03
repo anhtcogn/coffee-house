@@ -7,4 +7,5 @@ import java.util.List;
 public interface AddressService {
     List<AddressEntity> getAddressOfUser(Long userid);
     AddressEntity getAddress(Long id);
+    AddressEntity create(AddressEntity addressEntity);
 }

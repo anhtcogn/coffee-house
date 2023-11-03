@@ -12,8 +12,7 @@ public class ItemEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "image")
-    private String itemImage;
+    private String image;
     private String name;
 
     @Column(name = "price")
