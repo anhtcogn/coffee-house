@@ -28,6 +28,8 @@ public class OrderEntity {
     private int rating;
     @Column(name = "user_id")
     private Long userId;
+    @Column(name = "voucher_id")
+    private Long voucherId;
 }
 
 //    /* get (đang thực hiện, đã hoàn tất, đã hủy), add, huy don hang, đánh giá đơn hàng
