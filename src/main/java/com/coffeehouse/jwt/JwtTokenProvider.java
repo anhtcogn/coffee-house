@@ -1,42 +1,77 @@
 package com.coffeehouse.jwt;
-import com.coffeehouse.security.CustomUserDetails;
+
+import com.coffeehouse.entity.UserRole;
+import com.coffeehouse.security.CustomUserService;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Base64;
 import java.util.Date;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Component
 @Slf4j
 public class JwtTokenProvider {
 
-    private final String JWT_SECRET = "ghtk";
-    // jwt expire
-    private final Long JWT_EXPIRATION = 99999999999L;
+    private String secretKey="my32characterultrasecureandultralongsecretaqwcsvwcsa";
 
-    public String generateToken(CustomUserDetails userDetails) {
+    private long validityInMilliseconds = 3600000; // 1h
+
+    @Autowired
+    private CustomUserService customUserService;
+
+    @PostConstruct
+    protected void init() {
+        secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
+    }
+
+    public String createToken(String username, List<UserRole> userRoles) {
+
+        Claims claims = Jwts.claims().setSubject(username);
+        claims.put("auth", userRoles.stream().map(s -> new SimpleGrantedAuthority(s.getAuthority())).filter(Objects::nonNull).collect(Collectors.toList()));
+
         Date now = new Date();
-        Date expireDate = new Date(now.getTime() + JWT_EXPIRATION);
+        Date validity = new Date(now.getTime() + validityInMilliseconds);
 
-        return Jwts.builder()
-                .setSubject(Long.toString(userDetails.getUser().getId()))
-                .setIssuedAt(now)
-                .setExpiration(expireDate)
-                .signWith(SignatureAlgorithm.HS512, JWT_SECRET)
+        return Jwts.builder()//
+                .setClaims(claims)//
+                .setIssuedAt(now)//
+                .setExpiration(validity)//
+                .signWith(SignatureAlgorithm.HS256, secretKey)//
                 .compact();
     }
 
-    public Long getUserIdFromJwt(String token) {
-        Claims claims = Jwts.parser()
-                .setSigningKey(JWT_SECRET)
-                .parseClaimsJws(token)
-                .getBody();
-        return Long.parseLong(claims.getSubject());
+    public Authentication getAuthentication(String token) {
+        UserDetails userDetails = customUserService.loadUserByUsername(getUsername(token));
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
-    public boolean validateToken(String authToken) {
+    public String getUsername(String token) {
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+    }
+
+    public String resolveToken(HttpServletRequest req) {
+        String bearerToken = req.getHeader("Authorization");
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
+        }
+        return null;
+    }
+
+    public boolean validateToken(String token) {
         try {
-            Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(authToken);
+            Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
             return true;
         } catch (MalformedJwtException ex) {
             log.error("Invalid JWT token");
@@ -48,28 +83,6 @@ public class JwtTokenProvider {
             log.error("JWT claims string is empty.");
         }
         return false;
-    }
-
-    // Get userId từ RequestHeader "Authorization"
-    public Long getUserIdFromHeader(String jwt) {
-        if (jwt == null){
-            return null;
-        }
-        String[] new_jwt = jwt.split("\\s");
-        jwt = new_jwt[1];
-        return this.getUserIdFromJwt(jwt);
-    }
-
-
-    public String generateTokenByIdUser(Long userId) {
-        Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + JWT_EXPIRATION);
-        return Jwts.builder()
-                .setSubject(Long.toString(userId))
-                .setIssuedAt(now)
-                .setExpiration(expiryDate)
-                .signWith(SignatureAlgorithm.HS512, JWT_SECRET)
-                .compact();
     }
 }
 

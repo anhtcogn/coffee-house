@@ -1,22 +1,22 @@
 package com.coffeehouse.service;
 
 import com.coffeehouse.entity.UserEntity;
-import com.coffeehouse.payload.LoginRequest;
-import com.coffeehouse.payload.LoginResponse;
+import com.coffeehouse.payload.Request;
+import com.coffeehouse.payload.Request;
 import com.coffeehouse.payload.Response;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
 
 public interface UserService {
-    UserEntity getUser(Long id);
 
-    Response register(UserEntity user);
+    Response register(String username, String password);
 
-    LoginResponse login(LoginRequest loginRequest);
+    Response login(String username, String password);
 
-    UserEntity updateInfo(Long id,
-                          String phoneNum,
-                          String address);
+    UserEntity update(String name, String phoneNum, String email, MultipartFile image, Long id);
 
-    Response changePw(Long id,
-                     String oldPw,
-                     String newPw);
+    UserEntity getMyProfile(Long id);
+
+    Response delete(Long id);
 }

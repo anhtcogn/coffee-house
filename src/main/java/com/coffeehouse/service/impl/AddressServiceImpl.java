@@ -21,14 +21,36 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public AddressEntity getAddress(Long id) {
-        return addressRepository.getById(id);
+        return addressRepository.getAddressEntityById(id);
     }
 
     @Override
-    public AddressEntity create(AddressEntity addressEntity) {
-        AddressEntity address = new AddressEntity();
-        address.setAddress(addressEntity.getAddress());
-        address.setId(addressEntity.getId());
-        return addressRepository.save(address);
+    public AddressEntity create(String address,
+                                String name,
+                                String phone,
+                                Long userId) {
+        AddressEntity addressEntity = new AddressEntity();
+        addressEntity.setReceiveAddress(address);
+        addressEntity.setReceiveName(name);
+        addressEntity.setReceivePhone(phone);
+        addressEntity.setUserId(userId);
+        return addressRepository.save(addressEntity);
+    }
+
+    @Override
+    public AddressEntity update(String address,
+                                String name,
+                                String phone,
+                                Long addressId) {
+        AddressEntity addressEntity = addressRepository.getAddressEntityById(addressId);
+        addressEntity.setReceiveAddress(address);
+        addressEntity.setReceiveName(name);
+        addressEntity.setReceivePhone(phone);
+        return addressRepository.save(addressEntity);
+    }
+
+    @Override
+    public void delete(Long id) {
+        addressRepository.deleteById(id);
     }
 }

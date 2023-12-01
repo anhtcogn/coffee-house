@@ -1,37 +1,39 @@
 package com.coffeehouse.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
 @Table(name = "orders")
-public class OrderEntity {
+public class OrderDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "total_price")
-    private Double totalPrice;
+    private double total;
     @Column(name = "order_time")
-    private LocalDateTime orderTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime orderTime = LocalDateTime.now();
+    private int month = LocalDateTime.now().getMonthValue();
     @Column(name = "payment_method")
     private String paymentMethod;
-    @Column(name = "receiver_name")
-    private String receiverName;
-    @Column(name = "receiver_phone")
-    private String receiverPhone;
-    @Column(name = "receiver_address")
-    private String receiverAddress;
+    @Column(name = "address_id")
+    private Long addressId;
     private String status;
     private int rating;
     @Column(name = "user_id")
     private Long userId;
     @Column(name = "voucher_id")
     private Long voucherId;
-}
 
+}
 //    /* get (đang thực hiện, đã hoàn tất, đã hủy), add, huy don hang, đánh giá đơn hàng
 //        - ma don hang
 //        - user(ten, so dien thoai)

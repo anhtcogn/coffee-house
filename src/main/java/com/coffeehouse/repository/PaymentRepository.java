@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PaymentRepository extends JpaRepository<PaymentEntity, Long> {
     PaymentEntity getById(Long id);
+    PaymentEntity getByToken(String token);
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -35,17 +36,25 @@ public class ItemController {
     }
 
     @PostMapping("/create")
-    public ItemEntity create(@ModelAttribute ItemEntity itemEntity,
-                             @RequestParam(required = false) MultipartFile image
-                             ) {
-        return itemService.create(itemEntity, image);
+    public ItemEntity create(
+            @RequestParam String name,
+            @RequestParam double price,
+            @RequestParam String description,
+            @RequestParam Long categoryId,
+            @RequestParam(required = false) MultipartFile image
+                             ) throws IOException {
+        return itemService.create(name, price, description, categoryId, image);
     }
 
-    @PutMapping("/update")
-    public ItemEntity update(@ModelAttribute ItemEntity itemEntity,
-                             @RequestParam(required = false) MultipartFile image
+    @PutMapping("/update/{id}")
+    public ItemEntity update(@RequestParam String name,
+                             @RequestParam double price,
+                             @RequestParam String description,
+                             @RequestParam Long categoryId,
+                             @RequestParam(required = false) MultipartFile image,
+                             @PathVariable("id") Long id
     ) {
-        return itemService.update(itemEntity, image);
+        return itemService.update(name, price, description, categoryId, image, id);
     }
 
     @DeleteMapping("/delete/{id}")

@@ -11,7 +11,13 @@ public class AddressEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String address;
+
+    @Column(name = "receive_address")
+    private String receiveAddress;
+    @Column(name = "receive_name")
+    private String receiveName;
+    @Column(name = "receive_phone")
+    private String receivePhone;
 
     @Column(name = "user_id")
     private Long userId;

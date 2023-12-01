@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 @Table(name = "payment")
 public class PaymentEntity {
     @Id
-    @Column(name = "id")
     private Long id;
     private double amount;
     private String token;

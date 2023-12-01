@@ -4,46 +4,50 @@ import com.coffeehouse.entity.VoucherEntity;
 import com.coffeehouse.service.VoucherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("voucher")
+@RequestMapping("/voucher")
 public class VoucherController {
     @Autowired
     private VoucherService voucherService;
 
-    @GetMapping("/get/{voucherId}")
-    public VoucherEntity getVoucher(@PathVariable Long voucherId) {
-        return voucherService.getVoucher(voucherId);
+    @GetMapping("/get/{id}")
+    public VoucherEntity getVoucher(@PathVariable("id") Long id) {
+        return voucherService.getVoucher(id);
     }
 
-    @GetMapping("/all/{userId}")
-    public List<VoucherEntity> getUserVoucher(@PathVariable Long userId) {
-        return voucherService.getUserVoucher(userId);
+    @GetMapping("/active")
+    public List<VoucherEntity> getVoucherActive() {
+        return voucherService.getAllVoucherActive();
+    }
+
+    @GetMapping("/available")
+    public List<VoucherEntity> getVoucherAvailable(int bill) {
+        return voucherService.getVoucherAvailable(bill);
     }
 
     @PostMapping("/create")
     public VoucherEntity create(
-            @ModelAttribute VoucherEntity voucherEntity,
-            @RequestParam(required = false) MultipartFile image,
-            @RequestParam Long userId) {
-        return voucherService.createVoucher(voucherEntity, image, userId);
+            @ModelAttribute VoucherEntity voucherEntity
+    ) {
+        return voucherService.createVoucher(voucherEntity);
     }
 
-    @PutMapping("/update")
+    @PutMapping("/update/{id}")
     public VoucherEntity update(
             @ModelAttribute VoucherEntity voucherEntity,
-            @RequestParam(required = false) MultipartFile image) {
-        return voucherService.updateVoucher(voucherEntity, image);
+            @PathVariable("id") Long id
+    ) {
+        return voucherService.updateVoucher(voucherEntity, id);
     }
 
-    @PatchMapping("/updateVoucherStatus/{voucherId}")
+    @PatchMapping("/updateVoucherStatus/{id}")
     public VoucherEntity updateStatus(
-            @PathVariable Long voucherId,
-            @RequestParam boolean isUsed
+            @PathVariable("id") Long voucherId,
+            @RequestParam boolean isActive
     ) {
-        return voucherService.updateVoucherStatus(voucherId, isUsed);
+        return voucherService.updateVoucherStatus(voucherId, isActive);
     }
 }

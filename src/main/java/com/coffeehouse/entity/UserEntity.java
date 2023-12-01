@@ -2,10 +2,12 @@ package com.coffeehouse.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+
 import javax.persistence.*;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -14,31 +16,24 @@ public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
     private String username;
     private String password;
     private String name;
-    private String telephone;
+    @Column(name = "phone_num", unique = true)
+    private String phoneNum;
     private String email;
 
-    @Enumerated(EnumType.STRING)
-    private Gender gender;
-
     @Lob
-    @Column(name = "profile_picture")
-    private String profilePicture;
+    private String image;
 
     @JsonFormat(pattern = "dd-MM-yyyy")
     @Column(name = "birthday")
     private Date birthOfDate;
 
-    @Column(name = "created_at")
-    private LocalDate createdAt;
-    @Column(name = "modified_at")
-    private LocalDate modifiedAt;
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<UserRole> role;
 
-    enum Gender {
-        MALE,
-        FEMALE
-    }
+    private String token;
 }
 

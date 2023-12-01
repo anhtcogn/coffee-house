@@ -8,6 +8,6 @@ import java.util.List;
 
 @Repository
 public interface AddressRepository extends JpaRepository<AddressEntity, Long> {
-    AddressEntity getById(Long id);
+    AddressEntity getAddressEntityById(Long id);
     List<AddressEntity> getAllByUserId(Long userId);
 }

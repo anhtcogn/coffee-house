@@ -14,9 +14,7 @@ public class ItemEntity {
 
     private String image;
     private String name;
-
-    @Column(name = "price")
-    private Double originPrice;
+    private double price;
     private String description;
 
     @Column(name = "category_id")

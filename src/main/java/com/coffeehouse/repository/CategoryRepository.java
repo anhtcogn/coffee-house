@@ -8,6 +8,6 @@ import java.util.List;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<CategoryEntity, Long> {
-    CategoryEntity getById(Long id);
+    CategoryEntity getCategoryEntityById(Long id);
     List<CategoryEntity> findAll();
 }

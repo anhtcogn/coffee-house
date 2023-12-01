@@ -1,15 +1,15 @@
 package com.coffeehouse.service;
 
-import com.coffeehouse.entity.OrderEntity;
+import com.coffeehouse.entity.OrderDetail;
 
 import java.util.List;
 
 public interface OrderService {
-    OrderEntity getOrder(Long id);
-    List<OrderEntity> getListOrderOfUser(Long userId);
-    OrderEntity createOrder(OrderEntity orderEntity, Long userId);
-    OrderEntity confirmOrder(Long orderId);
-    OrderEntity cancelOrderByUser(Long orderId);
-    OrderEntity cancelOrderByAd(Long orderId);
-    OrderEntity rating(Long orderId, int rating);
+    OrderDetail getOrder(Long id);
+    List<OrderDetail> getListOrderOfUser(Long userId);
+    OrderDetail createOrder(Long addressId, Long voucherId, Long userId);
+    OrderDetail confirmOrder(Long orderId);
+    OrderDetail cancelOrderByUser(Long orderId);
+    OrderDetail cancelOrderByAd(Long orderId);
+    OrderDetail rating(Long orderId, int rating);
 }

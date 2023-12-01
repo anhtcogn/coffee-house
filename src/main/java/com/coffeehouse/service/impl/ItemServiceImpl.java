@@ -37,33 +37,42 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemEntity getItemById(Long id) {
-        return itemRepository.getById(id);
+        return itemRepository.findItemEntityById(id);
     }
 
     @Override
-    public ItemEntity create(ItemEntity itemEntity, MultipartFile image) {
+    public ItemEntity create(String name,
+                             double price,
+                             String description,
+                             Long categoryId,
+                             MultipartFile image) {
         ItemEntity item = new ItemEntity();
-        item.setName(itemEntity.getName());
-        item.setDescription(itemEntity.getDescription());
-        item.setOriginPrice(itemEntity.getOriginPrice());
-        item.setCategoryId(itemEntity.getCategoryId());
+        item.setName(name);
+        item.setDescription(description);
+        item.setPrice(price);
+        item.setCategoryId(categoryId);
 
         if (image != null && !image.isEmpty()) {
             String path = imageService.uploadImage(image, AZURE_CONTAINER);
+            System.out.println(path);
             item.setImage(path);
-        } else item.setImage(null);
+        } else item.setImage("");
 
         return itemRepository.save(item);
     }
 
     @Override
-    public ItemEntity update(ItemEntity itemEntity, MultipartFile image) {
-        ItemEntity item = itemRepository.getById(itemEntity.getId());
-        item.setName(itemEntity.getName());
-        item.setDescription(itemEntity.getDescription());
-        item.setImage(String.valueOf(image));
-        item.setOriginPrice(itemEntity.getOriginPrice());
-        item.setCategoryId(itemEntity.getCategoryId());
+    public ItemEntity update(String name,
+                             double price,
+                             String description,
+                             Long categoryId,
+                             MultipartFile image, Long id) {
+        ItemEntity item = itemRepository.getById(id);
+        item.setName(name);
+        item.setDescription(description);
+        item.setPrice(price);
+        item.setCategoryId(categoryId);
+
 
         if (image != null && !image.isEmpty()) {
             String existImage = item.getImage();

@@ -21,7 +21,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryEntity getCategory(Long id) {
-        return categoryRepository.getById(id);
+        return categoryRepository.getCategoryEntityById(id);
     }
 
     @Override
@@ -29,5 +29,17 @@ public class CategoryServiceImpl implements CategoryService {
         CategoryEntity category = new CategoryEntity();
         category.setName(name);
         return categoryRepository.save(category);
+    }
+
+    @Override
+    public CategoryEntity update(String name, Long id) {
+        CategoryEntity category = categoryRepository.getById(id);
+        category.setName(name);
+        return categoryRepository.save(category);
+    }
+
+    @Override
+    public void delete(Long id) {
+        categoryRepository.deleteById(id);
     }
 }

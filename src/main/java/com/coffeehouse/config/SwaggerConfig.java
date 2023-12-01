@@ -18,7 +18,7 @@ public class SwaggerConfig {
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.coffeehouse.controller"))
+                .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any())
                 .build()
                 .apiInfo(apiInfo());
@@ -26,11 +26,11 @@ public class SwaggerConfig {
 
 
     private ApiInfo apiInfo() {
-        return new ApiInfoBuilder().title("My REST API")
+        return new ApiInfoBuilder().title("My Coffee House")
                 .description("Some custom description of API.")
-                .contact(new Contact("John Doe", "www.example.com", "myeaddress@company.com"))
-                .license("Apache 2.0")
-                .version("0.0.1")
+                .contact(new Contact("", "https://localhost:8080/", "anhtcogn@gmail.com"))
+                .license("MIT License").licenseUrl("http://opensource.org/licenses/MIT")
+                .version("1.0.0")
                 .build();
     }
 }
